@@ -9,10 +9,9 @@
     "serve": "cross-env NODE_ENV=development netlify dev --functions build",
     "clean": "rm -rf build",
     "build:functions": "cross-env NODE_ENV=production webpack-cli",
-    "build:post": "node ./scripts/post-build",
     "build:bundle": "netlify functions:build --src build --functions staging",
     "build:docs": "node scripts/build-docs",
-    "build": "npm-run-all -s clean build:functions build:docs build:post",
+    "build": "npm-run-all -s clean build:functions build:docs",
     "watch:build": "cross-env NODE_ENV=development webpack-cli --watch",
     "example": "live-server example",
     "watch": "npm-run-all -p watch:build serve"
