@@ -106,6 +106,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 __webpack_require__(/*! ./utils/initialize */ "./functions/utils/initialize.js");
 
+var _ = __webpack_require__(/*! lodash */ "lodash");
+
 var CORS = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*",
@@ -162,7 +164,7 @@ function _captureEvent() {
 
 exports.handler = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event, context, callback) {
-    var _event$queryStringPar, pid, pathname;
+    var referrer, _URL, pathname, pid;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -179,20 +181,22 @@ exports.handler = /*#__PURE__*/function () {
             return _context.abrupt("return", preflight());
 
           case 6:
-            console.log("Request ".concat(event.httpMethod));
-            _context.prev = 7;
-            _event$queryStringPar = event.queryStringParameters, pid = _event$queryStringPar.pid, pathname = _event$queryStringPar.pathname;
+            console.log("Request ".concat(event.httpMethod), event);
+            referrer = _.get(event, ["headers", "referer"]);
+            _context.prev = 8;
+            _URL = new URL(referrer), pathname = _URL.pathname;
+            pid = event.queryStringParameters.pid;
             console.log("Capture Event", {
               pid: pid,
-              pathname: pathname
+              referrer: referrer
             });
-            _context.next = 12;
+            _context.next = 14;
             return captureEvent({
               pid: pid,
               pathname: pathname
             });
 
-          case 12:
+          case 14:
             return _context.abrupt("return", {
               statusCode: 200,
               headers: _objectSpread(_objectSpread({}, CORS), {}, {
@@ -203,9 +207,9 @@ exports.handler = /*#__PURE__*/function () {
               })
             });
 
-          case 15:
-            _context.prev = 15;
-            _context.t0 = _context["catch"](7);
+          case 17:
+            _context.prev = 17;
+            _context.t0 = _context["catch"](8);
             console.error(_context.t0);
             return _context.abrupt("return", {
               statusCode: 500,
@@ -215,12 +219,12 @@ exports.handler = /*#__PURE__*/function () {
               body: JSON.stringify(_context.t0.message)
             });
 
-          case 19:
+          case 21:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[7, 15]]);
+    }, _callee, null, [[8, 17]]);
   }));
 
   return function (_x2, _x3, _x4) {
@@ -277,6 +281,17 @@ module.exports = require("dotenv");
 /***/ (function(module, exports) {
 
 module.exports = require("klaw-sync");
+
+/***/ }),
+
+/***/ "lodash":
+/*!*************************!*\
+  !*** external "lodash" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash");
 
 /***/ }),
 

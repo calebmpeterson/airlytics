@@ -1,4 +1,5 @@
 require("./utils/initialize");
+const _ = require("lodash");
 
 const CORS = {
   "Content-Type": "application/json",
@@ -48,11 +49,13 @@ exports.handler = async (event, context, callback) => {
     console.log(`Preflight`);
     return preflight();
   } else {
-    console.log(`Request ${event.httpMethod}`);
+    console.log(`Request ${event.httpMethod}`, event);
+    const referrer = _.get(event, ["headers", "referer"]);
     try {
-      const { pid, pathname } = event.queryStringParameters;
+      const { pathname } = new URL(referrer);
+      const { pid } = event.queryStringParameters;
 
-      console.log(`Capture Event`, { pid, pathname });
+      console.log(`Capture Event`, { pid, referrer });
 
       await captureEvent({ pid, pathname });
 
