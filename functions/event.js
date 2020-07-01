@@ -18,7 +18,7 @@ function preflight(callback) {
   };
 }
 
-async function captureEvent({ pid, pathname }) {
+async function captureEvent({ pid, pathname, country }) {
   return new Promise((resolve, reject) => {
     const base = require("airtable").base(pid);
 
@@ -28,6 +28,7 @@ async function captureEvent({ pid, pathname }) {
           fields: {
             Pathname: pathname,
             "Date / Time": new Date(),
+            Country: country,
           },
         },
       ],
@@ -51,13 +52,14 @@ exports.handler = async (event, context, callback) => {
   } else {
     console.log(`Request ${event.httpMethod}`, event);
     const referrer = _.get(event, ["headers", "referer"]);
+    const country = _.get(event, ["headers", "x-country"], "");
     try {
       const { pathname } = new URL(referrer);
       const { pid } = event.queryStringParameters;
 
-      console.log(`Capture Event`, { pid, referrer });
+      console.log(`Capture Event`, { pid, referrer, country });
 
-      await captureEvent({ pid, pathname });
+      await captureEvent({ pid, pathname, country });
 
       return {
         statusCode: 200,
