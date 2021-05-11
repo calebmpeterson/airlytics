@@ -21,7 +21,7 @@
     "cross-env": "^7.0.0",
     "dotenv": "^8.2.0",
     "klaw-sync": "^6.0.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "regenerator-runtime": "^0.13.5"
   },
   "devDependencies": {
