@@ -56,8 +56,8 @@ exports.handler = async (event, context, callback) => {
     const country = _.get(event, ["headers", "x-country"], "");
     const clientIP = _.get(event, ["headers", "client-ip"], "");
     try {
-      const { pathname } = new URL(referrer);
-      const { pid } = event.queryStringParameters;
+      const { pathname: referrerPathname } = new URL(referrer);
+      const { pid, pathname = referrerPathname } = event.queryStringParameters;
 
       console.log(`Capture Event`, { pid, referrer, country, clientIP });
 
