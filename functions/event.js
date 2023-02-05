@@ -60,7 +60,7 @@ exports.handler = async (event, context, callback) => {
       const { pathname: referrerPathname } = new URL(referrer);
       const {
         pid,
-        action = "",
+        action = "pageview",
         pathname = referrerPathname,
       } = event.queryStringParameters;
 
