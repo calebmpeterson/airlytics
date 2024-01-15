@@ -1,4 +1,5 @@
 require("./utils/initialize");
+
 const _ = require("lodash");
 
 const CORS = {
@@ -54,9 +55,11 @@ exports.handler = async (event, context, callback) => {
     return preflight();
   } else {
     console.log(`Request ${event.httpMethod}`, event);
+
     const referrer = _.get(event, ["headers", "referer"]);
     const country = _.get(event, ["headers", "x-country"], "");
-    const clientIP = _.get(event, ["headers", "client-ip"], "");
+    const clientIP = _.get(event, ["headers", "client-ip"], context.ip);
+
     try {
       const { pathname: referrerPathname } = new URL(referrer);
       const {
