@@ -61,7 +61,7 @@ exports.handler = async (event, context, callback) => {
     const clientIP = _.get(event, ["headers", "client-ip"], context.ip);
 
     try {
-      const { pathname: referrerPathname } = new URL(referrer);
+      const { pathname: referrerPathname } = referrer ? new URL(referrer) : "";
       const {
         pid,
         action = "page:view",
