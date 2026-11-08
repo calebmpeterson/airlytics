@@ -4,7 +4,7 @@ Cookieless, clientless web analytics powered by Netlify Functions and Airtable.
 
 ## Runtime and development
 
-Use Node 24 (`.nvmrc`, `engines.node`, and Netlify build environment) and Yarn Classic 1.22.22. The official Airtable SDK is pinned at 0.12.2. Set `AIRTABLE_API_KEY` to an Airtable personal access token with access to the relevant base and table; never commit credentials. For reporting it needs read access as well as the existing ingestion write access.
+Use Node 24 (`.tool-versions`, `engines.node`, and Netlify build environment) and Yarn Classic 1.22.22. The official Airtable SDK is pinned at 0.12.2. Set `AIRTABLE_API_KEY` to an Airtable personal access token with access to the relevant base and table; never commit credentials. For reporting it needs read access as well as the existing ingestion write access.
 
 ```sh
 yarn install --frozen-lockfile
@@ -39,9 +39,14 @@ For property storage only, an administrator may manually add a Long text field n
 
 Set a strong `AIRLYTICS_REPORT_TOKEN` as a Netlify secret scoped to Functions. Optionally set `AIRLYTICS_REPORT_BASE_IDS` to a comma-separated list of allowed base IDs. Keep the token on a trusted server, never in browser code. Missing or invalid tokens fail closed before an Airtable read. This token authorizes report access to any base accessible to the Airtable credential unless the allowlist is configured.
 
+Run the interactive report client from an installed checkout:
+
 ```sh
-curl -H "Authorization: Bearer $AIRLYTICS_REPORT_TOKEN" 'https://YOUR-SITE/.netlify/functions/funnel-report?pid=appEXAMPLE&from=2026-11-01&to=2026-11-30&opportunity=bulk-editor'
+npm run funnel-report
 ```
+
+It prompts for the report token (without echoing it), Airtable base ID, opportunity slug, and inclusive UTC dates. The default interval is the last 30 UTC calendar days including today. It sends the token only to `https://analytics.cubicle6.com` over HTTPS using HTTP/1.1 and prints the JSON report. Run it in an interactive terminal; it does not save the token. To query a different deployment, use its authenticated API directly.
+
 
 Dates are inclusive UTC calendar days, at most 31 days; opportunity is a lowercase hyphenated slug. The report queries `Visits` without an Airtable view or a required `Properties` field, using SDK pagination and a 5,000-record limit plus one sentinel. `truncated` and `partial` signal incomplete results. Landing counts use `page:load` at `/squarespace-tools/<opportunity>`; stages use `experiment:<opportunity>:<stage>:<offer-version>` for `preview_interaction`, `pricing_viewed`, `purchase_intent_click`, `email_submitted`, and `email_confirmed`. Emit `email_confirmed` only after the provider confirms ownership. Existing action names are unchanged.
 

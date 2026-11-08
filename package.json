@@ -15,7 +15,8 @@
     "watch:build": "cross-env NODE_ENV=development webpack-cli --watch",
     "example": "live-server example",
     "watch": "npm-run-all -p watch:build serve",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests/*.test.js",
+    "funnel-report": "node scripts/funnel-report.js"
   },
   "dependencies": {
     "airtable": "0.12.2",
