@@ -1,4 +1,9 @@
 [build]
-  build = "npm run build"
-  # functions build directory
+  command = "npm run build"
   functions = "build"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[functions]
+  node_bundler = "esbuild"
